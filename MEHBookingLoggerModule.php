@@ -20,12 +20,6 @@
 /**
  * Class MehBookingLoggerModule
  */
-class MehBookingLoggerModule extends BaseModule
+class MEHBookingLoggerModule extends BaseModule
 {
-	public function init()
-	{
-		$this->setImport(array(
-				'MEHBookingLogger.components.*',
-			));
-	}
 }

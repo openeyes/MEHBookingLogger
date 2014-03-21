@@ -19,7 +19,8 @@
 
 return array(
 	'import' => array(
-		'application.modules.mehbookinglogger.models.*',
+		'application.modules.MEHBookingLogger.models.*',
+		'application.modules.MEHBookingLogger.components.*',
 	),
 	'components' => array(
 		'event' => array(
