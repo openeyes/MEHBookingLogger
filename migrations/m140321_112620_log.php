@@ -24,7 +24,7 @@ class m140321_112620_log extends CDbMigration
 		$this->createTable(
 			'mehbookinglogger_log',
 			array(
-				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT'
+				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'log_date' => 'timestamp NOT NULL',
 				'hos_num' => 'varchar(85) NOT NULL',
 				'action' => 'varchar(85) NOT NULL',
@@ -35,8 +35,9 @@ class m140321_112620_log extends CDbMigration
 				'ward_code' => 'varchar(85) NOT NULL',
 				'site_code' => 'varchar(85) NOT NULL',
 				'theatre_code' => 'varchar(85) NOT NULL',
+				'PRIMARY KEY (`id`)'
 			),
-			'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin'
+			'ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_bin'
 		);
 	}
 

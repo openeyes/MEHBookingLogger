@@ -32,7 +32,7 @@
  * @property string $theatre_code
 
  */
-class MEHBookingLogger_Log extends BaseActiveRecord
+class MEHBookingLogger_Log extends CActiveRecord
 {
 	/**
 	 * @param string $class_name
@@ -57,7 +57,7 @@ class MEHBookingLogger_Log extends BaseActiveRecord
 	public function rules()
 	{
 		return array(
-			array('log_date, hos_num, action, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'required'),
+			array('hos_num, action, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'required'),
 			array('id, log_date, hos_num, action, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'safe', 'on'=>'search'),
 		);
 	}
