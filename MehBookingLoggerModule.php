@@ -22,4 +22,10 @@
  */
 class MehBookingLoggerModule extends BaseModule
 {
+	public function init()
+	{
+		$this->setImport(array(
+				'MEHBookingLogger.components.*',
+			));
+	}
 }
