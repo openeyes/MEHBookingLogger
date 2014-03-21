@@ -18,29 +18,48 @@
  */
 
 /**
- * Class BookingObserver
+ * Class MEHBookingLogger_Log
+ *
+ * @property string $log_date
+ * @property string $hos_num
+ * @property string $action
+ * @property string $admission_date
+ * @property string $admission_time
+ * @property string $consultant_code
+ * @property string $subspecialty_code
+ * @property string $ward_code
+ * @property string $site_code
+ * @property string $theatre_code
+
  */
-class BookingObserver
+class MEHBookingLogger_Log extends BaseActiveRecord
 {
 	/**
-	 * @param array $params
+	 * @param string $class_name
+	 * @return CActiveRecord
 	 */
-	public function bookingAfterSave(array $params)
+	public static function model($class_name=__CLASS__)
 	{
-		$log = new MEHBookingLogger_Log();
-		$log->attributes = array(
-			'hos_num' => $params['patient']->hos_num,
-			'action' => $params['cancellation_date'] ? "removed" : ($params['new'] ? "added" : "changed"),
-			'admission_date' => $params['admission_date'],
-			'admission_time' => $params['admission_time'],
-			'consultant_code' => $params['firm']->consultant->code,
-			'subspecialty_code' => $params['firm']->subspecialty->ref_spec,
-			'ward_code' => $params['ward_code'],
-			'site_code' => $params['site']->remote_id,
-			'theatre_code' => $params['theatre_code'],
-		);
-		if(!$log->save()) {
-			Yii::log('Cannot save MEHBookingLogger_Log', 'error');
-		}
+		return parent::model($class_name);
 	}
+
+	/**
+	 * @return string
+	 */
+	public function tableName()
+	{
+		return 'mehbookinglogger_log';
+	}
+
+	/**
+	 * @return array
+	 */
+	public function rules()
+	{
+		return array(
+			array('log_date, hos_num, action, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'required'),
+			array('id, log_date, hos_num, action, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'safe', 'on'=>'search'),
+		);
+	}
+
 }
