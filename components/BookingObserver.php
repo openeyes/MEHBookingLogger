@@ -39,7 +39,7 @@ class BookingObserver
 			'site_code' => $params['site']->remote_id,
 			'theatre_code' => $params['theatre_code'],
 		);
-		Yii::log(var_export($log,true));
+		//Yii::log(var_export($log,true));
 		if(!$log->save()) {
 			Yii::log('Cannot save MEHBookingLogger_Log', 'error');
 		}
