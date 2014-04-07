@@ -62,4 +62,22 @@ class MEHBookingLogger_Log extends CActiveRecord
 		);
 	}
 
+	/**
+	 * @return string
+	 */
+	public function serialise()
+	{
+		$doc = new DOMDocument;
+		$event = $doc->createElement('event');
+		foreach ($this->attributes as $name => $value) {
+			$el = $doc->createElement($name);
+			$el->appendChild($doc->createTextNode($value));
+			$event->appendChild($el);
+		}
+		$doc->appendChild($event);
+
+		if (YII_DEBUG) $doc->formatOutput = true;
+		return $doc->saveXML();
+	}
 }
+
