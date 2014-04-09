@@ -57,8 +57,8 @@ class MEHBookingLogger_Log extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('hos_num, action, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'required'),
-			array('id, log_date, hos_num, action, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'safe', 'on'=>'search'),
+			array('hos_num, action, decision_date, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'required'),
+			array('id, log_date, hos_num, action, decision_date, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'safe', 'on'=>'search'),
 		);
 	}
 

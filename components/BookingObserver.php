@@ -31,6 +31,7 @@ class BookingObserver
 		$log->attributes = array(
 			'hos_num' => $params['patient']->hos_num,
 			'action' => $params['cancellation_date'] ? "removed" : ($params['new'] ? "added" : "changed"),
+			'decision_date' => $params['decision_date'],
 			'admission_date' => $params['admission_date'],
 			'admission_time' => $params['admission_time'],
 			'consultant_code' => ($params['firm']) ? $params['firm']->consultant->code : 'EMG',
