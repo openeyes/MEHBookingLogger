@@ -69,7 +69,27 @@ class MEHBookingLogger_Log extends CActiveRecord
 	{
 		$doc = new DOMDocument;
 		$event = $doc->createElement('event');
-		foreach ($this->attributes as $name => $value) {
+
+		$action_map = array(
+			'added' => 'C',
+			'removed' => 'X',
+			'changed' => 'M',
+		);
+
+		$attrs = array(
+			'hos_num' => $this->hos_num,
+			'idate' => $this->admission_date,
+			'itime' => $this->admission_time,
+			'dec_ad' => $this->decision_date,
+			'prof' => $this->consultant_code,
+			'spec' => $this->subspecialty_code,
+			'ward' => $this->ward_code,
+			'hospital' => $this->site_code,
+			'action' => $action_map[$this->action],
+			'refno' => '',
+		);
+
+		foreach ($attrs as $name => $value) {
 			$el = $doc->createElement($name);
 			$el->appendChild($doc->createTextNode($value));
 			$event->appendChild($el);
