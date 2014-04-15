@@ -27,20 +27,44 @@ class BookingObserver
 	 */
 	public function bookingAfterSave(array $params)
 	{
-		$log = new MEHBookingLogger_Log();
+		$pas_assignment = PasAssignment::model()->findByAttributes(array('internal_type' => 'Patient', 'internal_id' => $params['patient']->id));
+		if ($pas_assignment) {
+			$params['x_cn'] = $pas_assignment->external_id;
+		} else {
+			Yii::log('No PAS assignment found for patient {$patient->id}', 'error');
+			$params['x_cn'] = null;
+		}
+
+		$params['site_code'] = Yii::app()->db->createCommand()->select('pas_code')->from('mehbookinglogger_site_code')->where('site_id = ?', array($params['site']->id))->queryScalar();
+
+		if ($params['cancellation_date']) {
+			$this->log('X', $params);
+		} else {
+			if (!$params['new']) {
+				$this->log('X', $params, false);
+			}
+			$this->log('C', $params);
+		}
+	}
+
+	private function log($action, $params, $include_time = true)
+	{
+		$log = new MEHBookingLogger_Log;
+
 		$log->attributes = array(
-			'hos_num' => $params['patient']->hos_num,
-			'action' => $params['cancellation_date'] ? "removed" : ($params['new'] ? "added" : "changed"),
+			'log_date' => date('Y-m-d H:i:s'),
+			'x_cn' => $params['x_cn'],
+			'action' => $action,
 			'decision_date' => $params['decision_date'],
 			'admission_date' => $params['admission_date'],
-			'admission_time' => $params['admission_time'],
-			'consultant_code' => ($params['firm']) ? $params['firm']->consultant->code : 'EMG',
+			'admission_time' => $include_time ? $params['admission_time'] : null,
+			'consultant_code' => ($params['firm']) ? $params['firm']->pas_code : 'EMG',
 			'subspecialty_code' => ($params['firm']) ? $params['firm']->subspecialty->ref_spec : 'EMG',
 			'ward_code' => $params['ward_code'],
-			'site_code' => $params['site']->remote_id,
+			'site_code' => $params['site_code'],
 			'theatre_code' => $params['theatre_code'],
 		);
-		//Yii::log(var_export($log,true));
+
 		if(!$log->save()) {
 			Yii::log('Cannot save MEHBookingLogger_Log', 'error');
 		}

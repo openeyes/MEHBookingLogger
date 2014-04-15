@@ -21,8 +21,9 @@
  * Class MEHBookingLogger_Log
  *
  * @property string $log_date
- * @property string $hos_num
+ * @property string $x_cn
  * @property string $action
+ * @property string $decision_date
  * @property string $admission_date
  * @property string $admission_time
  * @property string $consultant_code
@@ -57,8 +58,7 @@ class MEHBookingLogger_Log extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('hos_num, action, decision_date, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'required'),
-			array('id, log_date, hos_num, action, decision_date, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'safe', 'on'=>'search'),
+			array('log_date, x_cn, action, decision_date, admission_date, admission_time, consultant_code, subspecialty_code, ward_code, site_code, theatre_code', 'safe'),
 		);
 	}
 
@@ -70,23 +70,18 @@ class MEHBookingLogger_Log extends CActiveRecord
 		$doc = new DOMDocument;
 		$event = $doc->createElement('event');
 
-		$action_map = array(
-			'added' => 'C',
-			'removed' => 'X',
-			'changed' => 'M',
-		);
-
 		$attrs = array(
-			'hos_num' => $this->hos_num,
-			'idate' => $this->admission_date,
-			'itime' => $this->admission_time,
-			'dec_ad' => $this->decision_date,
+			'X_CN' => $this->x_cn,
+			'idate' => date('Ymd', strtotime($this->admission_date)),
+			'itime' => preg_replace('/:\d\d$/', '', $this->admission_time),
+			'dec_ad' => date('Ymd', strtotime($this->decision_date)),
 			'prof' => $this->consultant_code,
 			'spec' => $this->subspecialty_code,
 			'ward' => $this->ward_code,
 			'hospital' => $this->site_code,
-			'action' => $action_map[$this->action],
+			'action' => $this->action,
 			'refno' => '',
+			'timestamp' => date(DATE_ISO8601, strtotime($this->log_date)),
 		);
 
 		foreach ($attrs as $name => $value) {
