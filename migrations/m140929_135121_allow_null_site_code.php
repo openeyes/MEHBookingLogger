@@ -17,33 +17,15 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-/**
- * Class BookingObserver
- */
-class BookingObserver
+class m140929_135121_allow_null_site_code extends CDbMigration
 {
-	/**
-	 * @param array $params
-	 */
-	public function bookingAfterSave(array $params)
+	public function up()
 	{
-		error_log('after save!!');
+		$this->alterColumn('mehbookinglogger_log', 'site_code', 'varchar(85)');
+	}
 
-		$log = new MEHBookingLogger_Log();
-		$log->attributes = array(
-			'hos_num' => $params['patient']->hos_num,
-			'action' => $params['cancellation_date'] ? "removed" : ($params['new'] ? "added" : "changed"),
-			'admission_date' => $params['admission_date'],
-			'admission_time' => $params['admission_time'],
-			'consultant_code' => ($params['firm']) ? $params['firm']->consultant->code : 'EMG',
-			'subspecialty_code' => ($params['firm']) ? $params['firm']->subspecialty->ref_spec : 'EMG',
-			'ward_code' => $params['ward_code'],
-			'site_code' => $params['site']->remote_id,
-			'theatre_code' => $params['theatre_code'],
-		);
-		//Yii::log(var_export($log,true));
-		if(!$log->save()) {
-			Yii::log('Cannot save MEHBookingLogger_Log', 'error');
-		}
+	public function down()
+	{
+		$this->alterColumn('mehbookinglogger_log', 'site_code', 'varchar(85) NOT NULL');
 	}
 }
