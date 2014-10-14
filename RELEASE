@@ -3,6 +3,10 @@ Release History
 
 This document is intended to summarise the changes made for each release.
 
+1.7.1
+-----
++ removed erroneous debug message
+
 1.7.0
 -----
 + allow null site codes when logging

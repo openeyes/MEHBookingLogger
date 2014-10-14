@@ -27,7 +27,6 @@ class BookingObserver
 	 */
 	public function bookingAfterSave(array $params)
 	{
-		error_log('after save!!');
 
 		$log = new MEHBookingLogger_Log();
 		$log->attributes = array(
